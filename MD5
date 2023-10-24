@@ -1,4 +1,4 @@
-80cc98644afd0f64fd291edcc1bb9dff *DESCRIPTION
+e97a12b0b9a86e871aea8bda4d89b81f *DESCRIPTION
 22c9d8ab609036e36d452dc649e6909b *LICENSE
 7de5f9d8126737565f66bbb602d1193c *NAMESPACE
 6eeea914fab20ef132b37149bcce05d8 *R/age.R
@@ -11,12 +11,12 @@ c3b9758fea1b2a5473cda9295668fe80 *R/birth_year.R
 2546b34ed3b0ba812dd40d6d05a8e65c *R/cnid_info.R
 5cdaf250e8f19c55a106596b957a29a1 *R/cstl.R
 f00db387aa0f29f036912d2ad16ec661 *R/gender.R
-b93e1b3a01e8fd484b68c6feb65f047f *R/mdays.R
+c26680a775ddcb6e1cb002d7fff738ef *R/mdays.R
 6bcebdbb8a0d5a26036f888af6d6ad56 *R/region.R
 329ea3215389c04e1e287f4a641125c5 *R/sysdata.rda
-4b9e827c13981c0096e5337c79f5a6ff *R/ydays.R
+0fd8c30376af63bf145af5c18fe0e85a *R/ydays.R
 aca38e2663ef2968a26c939d5840813f *R/zodiac.R
-ee77ce2835d09e7b56fd934f5069ad6a *README.md
+e0f1ac192fccfeba4c15786b350b13f8 *README.md
 41973f9b7c1270f5e9cf73bf38807c35 *man/age.Rd
 5f6b03013015d2f0ac7b769892f4517b *man/age_by_year.Rd
 f5b58170ea8ae621c84757f9ea72d0ae *man/birth_date.Rd

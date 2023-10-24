@@ -38,15 +38,10 @@ mdays = function(
   days_in_month = integer(12)
   days_in_month[c(1, 3, 5, 7, 8, 10, 12)] = 31
   days_in_month[c(4, 6, 9, 11)] = 30
-  
-  if (
-    (year %% 4 == 0 & year %% 100 != 0) |
+  days_in_month[2] = 28 + (
+    (year %% 4 == 0 && year %% 100 != 0) || 
     (year %% 400 == 0)
-  ) {
-    days_in_month[2] = 29
-  } else {
-    days_in_month[2] = 28
-  }
+  )
   
   return(days_in_month[month])
   

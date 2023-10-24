@@ -23,11 +23,10 @@ ydays = function(
   }
 
   year = as.integer(year)
-  days_in_year = 0
-  
-  for (month in 1:12) {
-    days_in_year = days_in_year + mdays(month, year)
-  }
+  days_in_year = 365 + (
+    (year %% 4 == 0 && year %% 100 != 0) || 
+    (year %% 400 == 0)
+  )
   
   return(days_in_year)
   
