@@ -25,7 +25,7 @@ id = c(
 cnid_info(id)
 ```
 
-Check the ID number for logical errors.
+Check whether the ID number is valid.
 
 ``` r
 check_id(id)
@@ -34,9 +34,6 @@ check_id(id)
 Get date of birth, age, gender, etc.
 
 ``` r
-birth_year(id)
-birth_month(id)
-birth_day(id)
 birth_date(id)
 age(id)
 age_by_year(id)
@@ -46,15 +43,20 @@ zodiac(id)
 cstl(id)
 ```
 
-Calculate the number of days in a specified year and month, the default is 
-current year. such as february 2022.
+Calculate whether a given year is a leap year. Return TRUE if it is a leap year, 
+FALSE otherwise.
 
 ``` r
-mdays(2, 2022)
+leap_year(2024)
 ```
 
-Calculate the number of days in a specified year, the default is current year. 
-such as 2022.
+Calculate the number of days in a given year and month, such as february 2022.
+
+``` r
+mdays(2022, 2)
+```
+
+Calculate the number of days in a given year, such as 2022.
 
 ``` r
 ydays(2022)

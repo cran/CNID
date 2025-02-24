@@ -1,50 +1,25 @@
-#' @title Calculate the number of days in a specified year and month
+#' @title Calculate the number of days in a given year and month
 #'
 #' @description
-#' Calculate the number of days in a specified year and month.
+#' Calculate the number of days in a given year and month.
 #'
-#' @param month A given month, such as 2.
+#' @param year A given year.
 #' 
-#' @param year A given year, the default is current year.
+#' @param month A given month, vectorization parameter passing is supported.
 #'
-#' @return Days in a specified year and month.
+#' @return Days in a given year and month.
 #'
 #' @examples
-#' mdays(2, 2022)
+#' mdays(2025, 1:12)
 #'
 #' @export
 
 #------------------------------------------------------------------------------#
 
-mdays = function(
-    month, year = as.integer(format(Sys.Date(), "%Y"))
-) {
-  
-  if (is.na(as.numeric(month))) {
-    stop("month must be numeric value")
-  }
-  
-  if (is.na(as.numeric(year))) {
-    stop("year must be numeric value")
-  }
-  
-  month = as.integer(month)
-  year = as.integer(year)
-  
-  if (month < 1 || month > 12) {
-    stop("The month must be between 1 and 12")
-  }
-  
-  days_in_month = integer(12)
-  days_in_month[c(1, 3, 5, 7, 8, 10, 12)] = 31
-  days_in_month[c(4, 6, 9, 11)] = 30
-  days_in_month[2] = 28 + (
-    (year %% 4 == 0 && year %% 100 != 0) || 
-    (year %% 400 == 0)
-  )
-  
-  return(days_in_month[month])
-  
+mdays = function(year, month) {
+  days = c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)[month]
+  days[month == 2 & leap_year(year)] = 29  # February in leap years has 29 days
+  days
 }
 
 #------------------------------------------------------------------------------#

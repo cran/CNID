@@ -1,7 +1,7 @@
-#' @title Check the ID number for logical errors
+#' @title Check whether the ID number is valid
 #'
 #' @description
-#' Check the ID number for logical errors.
+#' Check whether the ID number is valid.
 #'
 #' @param id A vector of ID numbers.
 #'
@@ -20,7 +20,7 @@
 #------------------------------------------------------------------------------#
 
 check_id = function(id) {
-  cnid_info(id)$check_id
+  cnid_info(id)$valid
 }
 
 #------------------------------------------------------------------------------#

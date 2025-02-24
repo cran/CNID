@@ -2,20 +2,20 @@
 % Please edit documentation in R/ydays.R
 \name{ydays}
 \alias{ydays}
-\title{Calculate the number of days in a specified year}
+\title{Calculate the number of days in a given year}
 \usage{
-ydays(year = as.integer(format(Sys.Date(), "\%Y")))
+ydays(year)
 }
 \arguments{
-\item{year}{A given year, the default is current year.}
+\item{year}{A given year, vectorization parameter passing is supported.}
 }
 \value{
-Days in a specified year.
+Days in a given year.
 }
 \description{
-Calculate the number of days in a specified year.
+Calculate the number of days in a given year.
 }
 \examples{
-ydays(2022)
+ydays(2025)
 
 }

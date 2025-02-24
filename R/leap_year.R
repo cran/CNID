@@ -1,21 +1,21 @@
-#' @title Calculate the number of days in a given year
+#' @title Calculate whether a given year is a leap year
 #'
 #' @description
-#' Calculate the number of days in a given year.
+#' Calculate whether a given year is a leap year.
 #'
 #' @param year A given year, vectorization parameter passing is supported.
 #'
-#' @return Days in a given year.
+#' @return TRUE or FALSE. Return TRUE if it is a leap year, FALSE otherwise.
 #'
 #' @examples
-#' ydays(2025)
+#' leap_year(2024)
 #'
 #' @export
 
 #------------------------------------------------------------------------------#
 
-ydays = function(year) {
-  365 + leap_year(year)
+leap_year = function(year) {
+  (year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0)
 }
 
 #------------------------------------------------------------------------------#

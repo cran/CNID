@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_id.R
 \name{check_id}
 \alias{check_id}
-\title{Check the ID number for logical errors}
+\title{Check whether the ID number is valid}
 \usage{
 check_id(id)
 }
@@ -13,7 +13,7 @@ check_id(id)
 A vector of TRUE or FALSE.
 }
 \description{
-Check the ID number for logical errors.
+Check whether the ID number is valid.
 }
 \examples{
 id = c(
