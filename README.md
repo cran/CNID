@@ -1,7 +1,7 @@
 
 # Introduction
 
-The Chinese ID number contains a lot of information, this package helps you get the date of birth, age, age based on year, gender, region, zodiac, constellation information from the Chinese ID number.
+The Chinese ID number contains a lot of information, this package helps you get the region, date of birth, age, age based on year, gender, zodiac, constellation information from the Chinese ID number.
 
 ## Installation
 
@@ -18,9 +18,12 @@ Get full information from ID number.
 
 ``` r
 id = c(
+  "653127198503161793",
   "652801197305161555", 
   "130206202202291545",
-  "110101841125178"
+  "110101841125178",
+  "12345678",
+  "65312a198204181793"
 )
 cnid_info(id)
 ```

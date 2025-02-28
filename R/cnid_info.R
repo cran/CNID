@@ -10,9 +10,12 @@
 #'
 #' @examples
 #' id = c(
+#' "653127198503161793",
 #' "652801197305161555",
 #' "130206202202291545", 
-#' "110101841125178"
+#' "110101841125178",
+#' "12345678",
+#' "65312a198204181793"
 #' )
 #' cnid_info(id)
 #'
@@ -29,8 +32,8 @@ cnid_info = function(id) {
   )
   
   # Check code weight and corresponding table
-  weight = c(7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2)
-  check_code = c("1","0","X","9","8","7","6","5","4","3","2")
+  weight = c(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2)
+  check_code = c("1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2")
   
   # Chinese zodiac
   zodiacs = c(
@@ -55,9 +58,10 @@ cnid_info = function(id) {
   process_id = function(x) {
     # Initializes the result list
     res = list(
+      id = x,
       id_type = NA,
-      check = NA,
-      warning = NA,
+      check = "",
+      note = "",
       valid = FALSE,
       region = NA,
       gender = NA,
@@ -69,28 +73,38 @@ cnid_info = function(id) {
     )
     
     tryCatch({
-      # Foundation form verification
+      # ID number foundation form verification
       if (!nchar(x) %in% c(15, 18)) {
-        stop("Invalid ID length.")
+        res$note = paste0(
+          res$note, "[", "\u4e0d\u6ee1\u8db315\u621618\u4f4d\u8981\u6c42", "]"
+        )
+        stop(paste0(
+          "The ID number ", "'", x, "'", 
+          " is invalid. It must contain either 15 or 18 digits."
+        ))
       }
       
       if (!grepl("^\\d{15}(\\d{2}[0-9X])?$", x)) {
-        stop("Invalid ID character.")
+        res$note = paste0(
+          res$note, "[", "\u5305\u542b\u4e0d\u5408\u89c4\u7684\u5b57\u7b26", "]"
+        )        
+        stop(paste0(
+          "The ID number ", "'", x, "'", 
+          " is invalid. It must be 15 pure digits, or 18 characters where",
+          " the first 17 are digits and the last is either a digit or 'X'."
+        ))
       }
-      
-      # Convert to uppercase letters
-      x = toupper(x)
       
       # Extract basic information
       if (nchar(x) == 15) {
         res$id_type = "15\u4f4d\u8eab\u4efd\u8bc1"
         region_code = substr(x,1,6)
-        res$birth_date = as.Date(paste0("19", substr(x,7,12)), "%Y%m%d")
+        birth_date_code = paste0("19", substr(x,7,12))
         gender_code = as.numeric(substr(x,15,15))
       } else {
         res$id_type = "18\u4f4d\u8eab\u4efd\u8bc1"
-        region_code = substr(x,1,6)        
-        res$birth_date = as.Date(substr(x,7,14), "%Y%m%d")
+        region_code = substr(x,1,6)
+        birth_date_code = substr(x,7,14)
         gender_code = as.numeric(substr(x,17,17))
         
         # Check code verification
@@ -104,13 +118,10 @@ cnid_info = function(id) {
           "\u4e0d\u901a\u8fc7"
         )
         if (res$check == "\u4e0d\u901a\u8fc7") {
-          res$warning = "\u6821\u9a8c\u7801\u6821\u9a8c\u5931\u8d25"
+          res$note = paste0(
+            res$note, "[", "\u6821\u9a8c\u7801\u6821\u9a8c\u5931\u8d25", "]"
+          )
         }
-      }
-      
-      # Check date        
-      if (is.na(res$birth_date)) {
-        res$warning = "\u51fa\u751f\u65e5\u671f\u767b\u8bb0\u9519\u8bef"
       }
       
       # Region processing
@@ -121,15 +132,11 @@ cnid_info = function(id) {
         "\u672a\u77e5\u5730\u533a"
       )
       
-      # Gender processing
-      res$gender = ifelse(gender_code %% 2 == 1, "\u7537", "\u5973")
-      
-      # Validate ID
-      if (nchar(x) == 15) {
-        res$valid = ifelse(!is.na(res$birth_date), TRUE, FALSE)        
-      } else {
-        res$valid = ifelse(
-          res$check == "\u901a\u8fc7" & !is.na(res$birth_date), TRUE, FALSE
+      # Date of birth related processing
+      res$birth_date = as.Date(birth_date_code, "%Y%m%d")
+      if (is.na(res$birth_date)) {
+        res$note = paste0(
+          res$note, "[", "\u51fa\u751f\u65e5\u671f\u767b\u8bb0\u9519\u8bef", "]"
         )
       }
       
@@ -160,8 +167,42 @@ cnid_info = function(id) {
         }
       }
       
+      # Gender processing
+      res$gender = ifelse(gender_code %% 2 == 1, "\u7537", "\u5973")
+      
+      # Validate ID
+      if (nchar(x) == 15) {
+        res$valid = ifelse(!is.na(res$birth_date), TRUE, FALSE)        
+      } else {
+        res$valid = ifelse(
+          res$check == "\u901a\u8fc7" & !is.na(res$birth_date), TRUE, FALSE
+        )
+      }
+      
+      # ID number Content verification
+      if (is.na(res$birth_date) & res$check != "\u4e0d\u901a\u8fc7") {
+        stop(paste0(
+          "The ID number ", "'", x, "'", 
+          " is invalid. Please check it's date of birth."
+        ))
+      }
+      
+      if (!is.na(res$birth_date) & res$check == "\u4e0d\u901a\u8fc7") {
+        stop(paste0(
+          "The ID number ", "'", x, "'", 
+          " is invalid. Please check it's 18th digit check code."
+        ))
+      }
+      
+      if (is.na(res$birth_date) & res$check == "\u4e0d\u901a\u8fc7") {
+        stop(paste0(
+          "The ID number ", "'", x, "'", 
+          " is invalid. Please check it's 18th digit check code and date of birth."
+        ))
+      }
+      
     }, error = function(e) {
-      message(paste("ERROR:", e$message))
+      message(paste0("WARNING:", e$message))
     })
     
     return(res)
@@ -171,21 +212,8 @@ cnid_info = function(id) {
   result = lapply(id, process_id)
   
   # Convert to a data frame
-  data.frame(
-    id = id,
-    id_type = sapply(result, function(x) x$id_type),
-    check = sapply(result, function(x) x$check),
-    warning = sapply(result, function(x) x$warning),
-    valid = sapply(result, function(x) x$valid),
-    region = sapply(result, function(x) x$region),
-    gender = sapply(result, function(x) x$gender),
-    birth_date = as.Date(sapply(result, function(x) x$birth_date), origin = "1970-01-01"),
-    age = sapply(result, function(x) x$age),
-    age_by_year = sapply(result, function(x) x$age_by_year),
-    zodiac = sapply(result, function(x) x$zodiac),
-    cstl = sapply(result, function(x) x$cstl),    
-    stringsAsFactors = FALSE
-  )
+  do.call(rbind, lapply(result, as.data.frame))
+
 }
 
 #------------------------------------------------------------------------------#
