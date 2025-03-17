@@ -46,6 +46,12 @@ zodiac(id)
 cstl(id)
 ```
 
+Convert the 15 Digits ID Number to 18 Digits.
+
+``` r
+convert18(id)
+```
+
 Calculate whether a given year is a leap year. Return TRUE if it is a leap year, 
 FALSE otherwise.
 

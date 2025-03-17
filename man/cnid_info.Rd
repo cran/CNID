@@ -10,7 +10,7 @@ cnid_info(id)
 \item{id}{A vector of ID numbers.}
 }
 \value{
-A list about date of birth, age, gender, etc.
+A data frame about date of birth, age, gender, etc.
 obtained from ID number.
 }
 \description{
@@ -18,12 +18,12 @@ Get full information from ID number.
 }
 \examples{
 id = c(
-"653127198503161793",
-"652801197305161555",
-"130206202202291545", 
-"110101841125178",
-"12345678",
-"65312a198204181793"
+  "653127198503161793",
+  "652801197305161555",
+  "130206202202291545", 
+  "110101841125178",
+  "12345678",
+  "65312a198204181793"
 )
 cnid_info(id)
 

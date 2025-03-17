@@ -5,17 +5,17 @@
 #'
 #' @param id A vector of ID numbers.
 #'
-#' @return A list about date of birth, age, gender, etc.
+#' @return A data frame about date of birth, age, gender, etc.
 #' obtained from ID number.
 #'
 #' @examples
 #' id = c(
-#' "653127198503161793",
-#' "652801197305161555",
-#' "130206202202291545", 
-#' "110101841125178",
-#' "12345678",
-#' "65312a198204181793"
+#'   "653127198503161793",
+#'   "652801197305161555",
+#'   "130206202202291545", 
+#'   "110101841125178",
+#'   "12345678",
+#'   "65312a198204181793"
 #' )
 #' cnid_info(id)
 #'
@@ -39,6 +39,12 @@ cnid_info = function(id) {
   zodiacs = c(
     "\u9f20", "\u725b", "\u864e", "\u5154", "\u9f99", "\u86c7",
     "\u9a6c", "\u7f8a", "\u7334", "\u9e21", "\u72d7", "\u732a"
+  )
+  
+  # Lunar solar table
+  calendar_data = data.frame(
+    date = lunar_solar_table$solar,
+    lunar_date = lunar_solar_table$lunar
   )
   
   # constellation
@@ -98,14 +104,14 @@ cnid_info = function(id) {
       # Extract basic information
       if (nchar(x) == 15) {
         res$id_type = "15\u4f4d\u8eab\u4efd\u8bc1"
-        region_code = substr(x,1,6)
-        birth_date_code = paste0("19", substr(x,7,12))
-        gender_code = as.numeric(substr(x,15,15))
+        region_code = substr(x, 1, 6)
+        birth_date_code = paste0("19", substr(x, 7, 12))
+        gender_code = as.numeric(substr(x, 15, 15))
       } else {
         res$id_type = "18\u4f4d\u8eab\u4efd\u8bc1"
-        region_code = substr(x,1,6)
-        birth_date_code = substr(x,7,14)
-        gender_code = as.numeric(substr(x,17,17))
+        region_code = substr(x, 1, 6)
+        birth_date_code = substr(x, 7, 14)
+        gender_code = as.numeric(substr(x, 17, 17))
         
         # Check code verification
         chars = strsplit(x, "")[[1]]
@@ -117,6 +123,7 @@ cnid_info = function(id) {
           "\u901a\u8fc7", 
           "\u4e0d\u901a\u8fc7"
         )
+        
         if (res$check == "\u4e0d\u901a\u8fc7") {
           res$note = paste0(
             res$note, "[", "\u6821\u9a8c\u7801\u6821\u9a8c\u5931\u8d25", "]"
@@ -153,8 +160,16 @@ cnid_info = function(id) {
           as.integer(format(birth, "%Y"))
         
         # Chinese zodiac processing
-        res$zodiac = zodiacs[(as.integer(format(birth, "%Y")) - 1900) %% 12 + 1]
-        
+        y = as.integer(format(birth, "%Y"))
+        if (y >= 1800 & y <= 2200) {
+          calendar_data$date = as.Date(gsub("-", "", calendar_data$date), "%Y%m%d")
+          calendar_data$year = format(calendar_data$date, "%Y")
+          sfdate = calendar_data$date[format(birth, "%Y") == calendar_data$year]
+          index = (as.integer(format(birth, "%Y")) - 1900) %% 12 + 1 - 
+            (format(birth, "%m%d") < format(sfdate, "%m%d"))
+          res$zodiac = zodiacs[index]
+        }
+
         # constellation
         m = as.integer(format(birth, "%m"))
         d = as.integer(format(birth, "%d"))
