@@ -6,8 +6,8 @@ The Chinese ID number contains a lot of information, this package helps you get 
 ## Installation
 
 ``` r
-# Install development version from GitLab
-remotes::install_gitlab("chuxinyuan/cnid")
+# Install development version via GitHub
+remotes::install_github("chuxinyuan/cnid")
 # Install from CRAN
 install.packages("CNID")
 ```
